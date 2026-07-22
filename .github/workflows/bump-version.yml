@@ -60,4 +60,4 @@ jobs:
 
           PR_BODY="Version bump to ${VERSION} — updates all 8 latest.json files (macOS x64/arm64, Linux x64/arm64, Windows x64 user/system, Windows arm64 user/system). Triggered by @${ACTOR}"
 
-          gh pr create --title "Release v${VERSION}" --body "$PR_BODY" --base main --head "$BRANCH" --label release
+          gh pr create --title "Release v${VERSION}" --body "$PR_BODY" --base main --head "$BRANCH"
