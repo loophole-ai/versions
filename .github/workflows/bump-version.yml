@@ -56,30 +56,40 @@ jobs:
 
           echo "✅ All 8 files updated"
 
-      - name: Create pull request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: release/${{ github.event.inputs.version }}
-          commit-message: "chore: bump all latest.json to v${{ github.event.inputs.version }}"
-          title: "🚀 Release v${{ github.event.inputs.version }}"
-          body: |
-            ## Version bump: `${{ github.event.inputs.version }}`
+      - name: Push branch and open PR
+        env:
+          VERSION: ${{ github.event.inputs.version }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="release/${VERSION}"
 
-            Updates all 8 `latest.json` files to point to the new release.
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
 
-            ### Files changed
-            | Platform | Arch | Target |
-            |----------|------|--------|
-            | macOS    | x64  | —      |
-            | macOS    | arm64 | —     |
-            | Linux    | x64  | —      |
-            | Linux    | arm64 | —     |
-            | Windows  | x64  | user   |
-            | Windows  | x64  | system |
-            | Windows  | arm64 | user  |
-            | Windows  | arm64 | system |
+          git checkout -b "$BRANCH"
+          git add oss/
+          git commit -m "chore: bump all latest.json to v${VERSION}"
+          git push origin "$BRANCH"
 
-            Triggered by @${{ github.actor }}
-          labels: release
-          delete-branch: true
+          gh pr create \
+            --title "Release v${VERSION}" \
+            --body "## Version bump: \`${VERSION}\`
+
+Updates all 8 \`latest.json\` files to point to the new release.
+
+### Files changed
+| Platform | Arch  | Target |
+|----------|-------|--------|
+| macOS    | x64   | —      |
+| macOS    | arm64 | —      |
+| Linux    | x64   | —      |
+| Linux    | arm64 | —      |
+| Windows  | x64   | user   |
+| Windows  | x64   | system |
+| Windows  | arm64 | user   |
+| Windows  | arm64 | system |
+
+Triggered by @${{ github.actor }}" \
+            --base main \
+            --head "$BRANCH" \
+            --label release
