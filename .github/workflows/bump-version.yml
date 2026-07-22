@@ -19,11 +19,9 @@ jobs:
       - name: Validate version format
         run: |
           if ! echo "${{ github.event.inputs.version }}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
-            echo "❌ Invalid version format: '${{ github.event.inputs.version }}'"
-            echo "   Expected format: MAJOR.MINOR.PATCH (e.g. 2.0.1)"
+            echo "Invalid version: ${{ github.event.inputs.version }} — expected MAJOR.MINOR.PATCH"
             exit 1
           fi
-          echo "✅ Version format valid: ${{ github.event.inputs.version }}"
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -32,64 +30,34 @@ jobs:
         env:
           VERSION: ${{ github.event.inputs.version }}
         run: |
-          BASE_URL="https://github.com/loophole-ai/loophole-ide/releases/download/${VERSION}"
-
-          update_json() {
-            local file="$1"
-            local url="$2"
-            echo "Updating $file → $url"
-            jq \
-              --arg v "$VERSION" \
-              --arg u "$url" \
-              '.version = $v | .productVersion = $v | .url = $u' \
-              "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+          BASE="https://github.com/loophole-ai/loophole-ide/releases/download/${VERSION}"
+          update() {
+            jq --arg v "$VERSION" --arg u "$2" '.version=$v | .productVersion=$v | .url=$u' "$1" > "$1.tmp" && mv "$1.tmp" "$1"
+            echo "updated $1"
           }
-
-          update_json "oss/darwin/x64/latest.json"           "${BASE_URL}/Loophole.x64.${VERSION}.dmg"
-          update_json "oss/darwin/arm64/latest.json"         "${BASE_URL}/Loophole.arm64.${VERSION}.dmg"
-          update_json "oss/linux/x64/latest.json"            "${BASE_URL}/Loophole-linux-x64-${VERSION}.tar.gz"
-          update_json "oss/linux/arm64/latest.json"          "${BASE_URL}/Loophole-linux-arm64-${VERSION}.tar.gz"
-          update_json "oss/win32/x64/user/latest.json"       "${BASE_URL}/LoopholeUserSetup-x64-${VERSION}.exe"
-          update_json "oss/win32/x64/system/latest.json"     "${BASE_URL}/LoopholeSetup-x64-${VERSION}.exe"
-          update_json "oss/win32/arm64/user/latest.json"     "${BASE_URL}/LoopholeUserSetup-arm64-${VERSION}.exe"
-          update_json "oss/win32/arm64/system/latest.json"   "${BASE_URL}/LoopholeSetup-arm64-${VERSION}.exe"
-
-          echo "✅ All 8 files updated"
+          update "oss/darwin/x64/latest.json"         "${BASE}/Loophole.x64.${VERSION}.dmg"
+          update "oss/darwin/arm64/latest.json"       "${BASE}/Loophole.arm64.${VERSION}.dmg"
+          update "oss/linux/x64/latest.json"          "${BASE}/Loophole-linux-x64-${VERSION}.tar.gz"
+          update "oss/linux/arm64/latest.json"        "${BASE}/Loophole-linux-arm64-${VERSION}.tar.gz"
+          update "oss/win32/x64/user/latest.json"     "${BASE}/LoopholeUserSetup-x64-${VERSION}.exe"
+          update "oss/win32/x64/system/latest.json"   "${BASE}/LoopholeSetup-x64-${VERSION}.exe"
+          update "oss/win32/arm64/user/latest.json"   "${BASE}/LoopholeUserSetup-arm64-${VERSION}.exe"
+          update "oss/win32/arm64/system/latest.json" "${BASE}/LoopholeSetup-arm64-${VERSION}.exe"
 
       - name: Push branch and open PR
         env:
           VERSION: ${{ github.event.inputs.version }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ACTOR: ${{ github.actor }}
         run: |
           BRANCH="release/${VERSION}"
-
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-
           git checkout -b "$BRANCH"
           git add oss/
           git commit -m "chore: bump all latest.json to v${VERSION}"
           git push origin "$BRANCH"
 
-          gh pr create \
-            --title "Release v${VERSION}" \
-            --body "## Version bump: \`${VERSION}\`
+          PR_BODY="Version bump to ${VERSION} — updates all 8 latest.json files (macOS x64/arm64, Linux x64/arm64, Windows x64 user/system, Windows arm64 user/system). Triggered by @${ACTOR}"
 
-Updates all 8 \`latest.json\` files to point to the new release.
-
-### Files changed
-| Platform | Arch  | Target |
-|----------|-------|--------|
-| macOS    | x64   | —      |
-| macOS    | arm64 | —      |
-| Linux    | x64   | —      |
-| Linux    | arm64 | —      |
-| Windows  | x64   | user   |
-| Windows  | x64   | system |
-| Windows  | arm64 | user   |
-| Windows  | arm64 | system |
-
-Triggered by @${{ github.actor }}" \
-            --base main \
-            --head "$BRANCH" \
-            --label release
+          gh pr create --title "Release v${VERSION}" --body "$PR_BODY" --base main --head "$BRANCH" --label release
