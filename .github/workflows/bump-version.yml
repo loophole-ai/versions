@@ -1,0 +1,85 @@
+name: Bump Version
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "New version (e.g. 2.0.1 or 3.8.4)"
+        required: true
+        type: string
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Validate version format
+        run: |
+          if ! echo "${{ github.event.inputs.version }}" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "❌ Invalid version format: '${{ github.event.inputs.version }}'"
+            echo "   Expected format: MAJOR.MINOR.PATCH (e.g. 2.0.1)"
+            exit 1
+          fi
+          echo "✅ Version format valid: ${{ github.event.inputs.version }}"
+
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update all latest.json files
+        env:
+          VERSION: ${{ github.event.inputs.version }}
+        run: |
+          BASE_URL="https://github.com/loophole-ai/loophole-ide/releases/download/${VERSION}"
+
+          update_json() {
+            local file="$1"
+            local url="$2"
+            echo "Updating $file → $url"
+            jq \
+              --arg v "$VERSION" \
+              --arg u "$url" \
+              '.version = $v | .productVersion = $v | .url = $u' \
+              "$file" > "$file.tmp" && mv "$file.tmp" "$file"
+          }
+
+          update_json "oss/darwin/x64/latest.json"           "${BASE_URL}/Loophole.x64.${VERSION}.dmg"
+          update_json "oss/darwin/arm64/latest.json"         "${BASE_URL}/Loophole.arm64.${VERSION}.dmg"
+          update_json "oss/linux/x64/latest.json"            "${BASE_URL}/Loophole-linux-x64-${VERSION}.tar.gz"
+          update_json "oss/linux/arm64/latest.json"          "${BASE_URL}/Loophole-linux-arm64-${VERSION}.tar.gz"
+          update_json "oss/win32/x64/user/latest.json"       "${BASE_URL}/LoopholeUserSetup-x64-${VERSION}.exe"
+          update_json "oss/win32/x64/system/latest.json"     "${BASE_URL}/LoopholeSetup-x64-${VERSION}.exe"
+          update_json "oss/win32/arm64/user/latest.json"     "${BASE_URL}/LoopholeUserSetup-arm64-${VERSION}.exe"
+          update_json "oss/win32/arm64/system/latest.json"   "${BASE_URL}/LoopholeSetup-arm64-${VERSION}.exe"
+
+          echo "✅ All 8 files updated"
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: release/${{ github.event.inputs.version }}
+          commit-message: "chore: bump all latest.json to v${{ github.event.inputs.version }}"
+          title: "🚀 Release v${{ github.event.inputs.version }}"
+          body: |
+            ## Version bump: `${{ github.event.inputs.version }}`
+
+            Updates all 8 `latest.json` files to point to the new release.
+
+            ### Files changed
+            | Platform | Arch | Target |
+            |----------|------|--------|
+            | macOS    | x64  | —      |
+            | macOS    | arm64 | —     |
+            | Linux    | x64  | —      |
+            | Linux    | arm64 | —     |
+            | Windows  | x64  | user   |
+            | Windows  | x64  | system |
+            | Windows  | arm64 | user  |
+            | Windows  | arm64 | system |
+
+            Triggered by @${{ github.actor }}
+          labels: release
+          delete-branch: true
