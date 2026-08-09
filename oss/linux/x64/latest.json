@@ -1,7 +1,7 @@
 {
-  "version": "2.1.4",
-  "productVersion": "2.1.4",
-  "url": "https://github.com/loophole-ai/loophole-ide/releases/download/2.1.4/Loophole-linux-x64-2.1.4.tar.gz",
+  "version": "2.1.5",
+  "productVersion": "2.1.5",
+  "url": "https://github.com/loophole-ai/loophole-ide/releases/download/2.1.5/Loophole-linux-x64-2.1.5.tar.gz",
   "sha256hash": "23833fe40a21c7c27dc1b8e86985d551e01b6669794f925216a0df1bcecc97fc",
-  "timestamp": 1786068542000
+  "timestamp": 1786296950000
 }
