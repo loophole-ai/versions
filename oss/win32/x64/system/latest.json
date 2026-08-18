@@ -1,7 +1,7 @@
 {
-  "version": "2.1.8",
-  "productVersion": "2.1.8",
-  "url": "https://github.com/loophole-ai/loophole-ide/releases/download/2.1.8/LoopholeSetup-x64-2.1.8.exe",
-  "sha256hash": "0d13a859f1b03e9888e3aed4b09ce53adcf59c17c779a83574b97e77b359dbf1",
-  "timestamp": 1786939717728
+  "version": "2.1.9",
+  "productVersion": "2.1.9",
+  "url": "https://github.com/loophole-ai/loophole-ide/releases/download/2.1.9/LoopholeSetup-x64-2.1.9.exe",
+  "sha256hash": "7b16bab9dddfbd28c14f24d74c4113189bdc83a37decab69a55513fa9d262af5",
+  "timestamp": 1787021655938
 }
