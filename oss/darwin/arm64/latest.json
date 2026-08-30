@@ -1,7 +1,7 @@
 {
-  "version": "2.1.9",
-  "productVersion": "2.1.9",
-  "url": "https://github.com/loophole-ai/loophole-ide/releases/download/2.1.9/Loophole-darwin-arm64-2.1.9.zip",
-  "sha256hash": "065fd5bc05f740487054226f7793f06fcc261506a8d0b50f50723ab0c30bbeb9",
-  "timestamp": 1786558000000
+  "version": "2.2.0",
+  "productVersion": "2.2.0",
+  "url": "https://github.com/loophole-ai/loophole-ide/releases/download/2.2.0/Loophole-darwin-arm64-2.2.0.zip",
+  "sha256hash": "bb701ad0e9366f0694ca33a9aadf7a6aa107db78966c8af3792d691eb3058c51",
+  "timestamp": 1787583401389
 }
