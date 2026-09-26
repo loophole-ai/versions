@@ -1,8 +1,8 @@
 {
-  "url": "https://github.com/loophole-ai/loophole-ide/releases/download/2.2.2/Loophole-darwin-arm64-2.2.2.dmg",
-  "name": "2.2.2",
-  "version": "2.2.2",
-  "productVersion": "2.2.2",
-  "timestamp": 1790325486721,
-  "sha256hash": "ec5baa0a390a6f396e01ae79945e241df7304484b84ed4e494c9217b9b0faacb"
+  "url": "https://github.com/loophole-ai/loophole-ide/releases/download/2.2.3/Loophole-darwin-arm64-2.2.3.dmg",
+  "name": "2.2.3",
+  "version": "2.2.3",
+  "productVersion": "2.2.3",
+  "timestamp": 1790427803013,
+  "sha256hash": "2ee08a56df5a1b4ab2b8aed1a9626f3e48ccea3795c0867cfa8092e7df0a4929"
 }
