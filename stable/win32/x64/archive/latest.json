@@ -1,8 +1,8 @@
 {
-  "url": "https://github.com/loophole-ai/loophole-ide/releases/download/2.2.2/Loophole-win32-x64-2.2.2.zip",
-  "name": "2.2.2",
-  "version": "2.2.2",
-  "productVersion": "2.2.2",
-  "timestamp": 1790327077821,
-  "sha256hash": "c664ad3277a44121bfca794b49c0b23dc1fa90c74959594671c723759c443f3c"
+  "url": "https://github.com/loophole-ai/loophole-ide/releases/download/2.2.3/Loophole-win32-x64-2.2.3.zip",
+  "name": "2.2.3",
+  "version": "2.2.3",
+  "productVersion": "2.2.3",
+  "timestamp": 1790429417208,
+  "sha256hash": "8ac00347c4bbb2781d71b5e472a883ec3c01e06343845c6c4efeae5b306015cb"
 }
