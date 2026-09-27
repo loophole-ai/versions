@@ -1,8 +1,8 @@
 {
-  "url": "https://github.com/loophole-ai/loophole-ide/releases/download/2.2.3/Loophole-linux-arm64-2.2.3.tar.gz",
-  "name": "2.2.3",
-  "version": "2.2.3",
-  "productVersion": "2.2.3",
-  "timestamp": 1790427053178,
-  "sha256hash": "37c7096dd368443815c8f5c23da3f7ceeb276d1d4c9340634ede2bdec81b483c"
+  "url": "https://github.com/loophole-ai/loophole-ide/releases/download/2.2.4/Loophole-linux-arm64-2.2.4.tar.gz",
+  "name": "2.2.4",
+  "version": "2.2.4",
+  "productVersion": "2.2.4",
+  "timestamp": 1790529612674,
+  "sha256hash": "ab0982bef1ca1544968b663b4a5ed0f0a226e0b259fe2e4c528c66a38c647449"
 }
