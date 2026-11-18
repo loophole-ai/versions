@@ -1,8 +1,8 @@
 {
-  "url": "https://github.com/loophole-ai/loophole-ide/releases/download/2.2.4/Loophole-x64-updates-disabled-2.2.4.msi",
-  "name": "2.2.4",
-  "version": "2.2.4",
-  "productVersion": "2.2.4",
-  "timestamp": 1790532036141,
-  "sha256hash": "c510f9c5ba860335c4be259fb1853569ad43e02c87542067b0907019092b3aa2"
+  "url": "https://github.com/loophole-ai/loophole-ide/releases/download/2.2.10/Loophole-x64-updates-disabled-2.2.10.msi",
+  "name": "2.2.10",
+  "version": "2.2.10",
+  "productVersion": "2.2.10",
+  "timestamp": 1795027540222,
+  "sha256hash": "9b8e03227a34a9c50bedbf3d810222d44cd506fe550e17bd3943f34fbe8233bc"
 }
